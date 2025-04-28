@@ -1,4 +1,4 @@
-# tapadam
+# HEAT
 Hands-on exploration of DNS servers, packet sniffing (promiscuous mode), and VyOS-based routing. Great for students, sysadmins, and network enthusiasts.
 An intelligent tool to automatically generate VyOS router configurations from real-world network traffic taps.
 
