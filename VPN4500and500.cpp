@@ -87,13 +87,19 @@ void packet_handler(u_char* user, const struct pcap_pkthdr* header, const u_char
         uint16_t udp_length = ntohs(*(uint16_t*)(udp_header + 4));
         int udp_payload_len = udp_length - 8;
 
-        if (!((Src_Prt == 500 || Src_Prt == 4500) || (Dest_Prt == 500 || Dest_Prt == 4500))) return;
+        bool is_vpn_port = (Src_Prt == 500 || Src_Prt == 4500 || Src_Prt == 51820 ||
+            Dest_Prt == 500 || Dest_Prt == 4500 || Dest_Prt == 51820);
+
+        if (!is_vpn_port) return;
 
         std::ostringstream oss;
         oss << "[IPv4] " << Src_Ip << ":" << Src_Prt << " -> " << Dest_Ip << ":" << Dest_Prt
             << " | Payload length: " << udp_payload_len << " bytes";
 
-        if (udp_payload_len >= sizeof(IKEv2Header)) {
+        if (Src_Prt == 51820 || Dest_Prt == 51820) {
+            oss << " | WireGuard UDP packet";
+        }
+        else if (udp_payload_len >= sizeof(IKEv2Header)) {
             const IKEv2Header* ike_hdr = (const IKEv2Header*)(udp_header + 8);
             uint8_t major_version = (ike_hdr->Version >> 4);
             if (major_version == 2) {
@@ -102,7 +108,7 @@ void packet_handler(u_char* user, const struct pcap_pkthdr* header, const u_char
             }
         }
 
-        if (Src_Prt == 4500 || Dest_Prt == 4500) {
+        if ((Src_Prt == 4500 || Dest_Prt == 4500) && !(Src_Prt == 51820 || Dest_Prt == 51820)) {
             if (udp_payload_len >= 4) {
                 const u_char* Nat_T_Header = udp_header + 8;
                 if (Nat_T_Header[0] == 0 && Nat_T_Header[1] == 0 && Nat_T_Header[2] == 0 && Nat_T_Header[3] == 0) {
@@ -131,13 +137,19 @@ void packet_handler(u_char* user, const struct pcap_pkthdr* header, const u_char
         uint16_t udp_length = ntohs(*(uint16_t*)(udp_header + 4));
         int udp_payload_len = udp_length - 8;
 
-        if (!((Src_Prt == 500 || Src_Prt == 4500) || (Dest_Prt == 500 || Dest_Prt == 4500))) return;
+        bool is_vpn_port = (Src_Prt == 500 || Src_Prt == 4500 || Src_Prt == 51820 ||
+            Dest_Prt == 500 || Dest_Prt == 4500 || Dest_Prt == 51820);
+
+        if (!is_vpn_port) return;
 
         std::ostringstream oss;
         oss << "[IPv6] " << Src_Ip << ":" << Src_Prt << " -> " << Dest_Ip << ":" << Dest_Prt
             << " | Payload length: " << udp_payload_len << " bytes";
 
-        if (udp_payload_len >= sizeof(IKEv2Header)) {
+        if (Src_Prt == 51820 || Dest_Prt == 51820) {
+            oss << " | WireGuard UDP packet";
+        }
+        else if (udp_payload_len >= sizeof(IKEv2Header)) {
             const IKEv2Header* ike_hdr = (const IKEv2Header*)(udp_header + 8);
             uint8_t major_version = (ike_hdr->Version >> 4);
             if (major_version == 2) {
@@ -146,7 +158,7 @@ void packet_handler(u_char* user, const struct pcap_pkthdr* header, const u_char
             }
         }
 
-        if (Src_Prt == 4500 || Dest_Prt == 4500) {
+        if ((Src_Prt == 4500 || Dest_Prt == 4500) && !(Src_Prt == 51820 || Dest_Prt == 51820)) {
             if (udp_payload_len >= 4) {
                 const u_char* Nat_T_Header = udp_header + 8;
                 if (Nat_T_Header[0] == 0 && Nat_T_Header[1] == 0 && Nat_T_Header[2] == 0 && Nat_T_Header[3] == 0) {
@@ -176,7 +188,7 @@ void capture_on_device(pcap_if_t* device) {
     }
 
     struct bpf_program filter;
-    const char* filter_exp = "udp port 500 or udp port 4500";
+    const char* filter_exp = "udp port 500 or udp port 4500 or udp port 51820";
 
     if (pcap_compile(handle, &filter, filter_exp, 1, PCAP_NETMASK_UNKNOWN) == -1) {
         std::lock_guard<std::mutex> lock(log_mutex);
