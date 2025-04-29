@@ -1,0 +1,204 @@
+#include <pcap.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "wpcap.lib")
+#pragma comment(lib, "ws2_32.lib")
+
+#define ETHERNET_HEADER_SIZE 14
+
+// Logging
+std::ofstream logFile;
+void log(const std::string& msg) {
+    std::cout << msg << std::endl;
+    if (logFile.is_open()) {
+        logFile << msg << std::endl;
+    }
+}
+
+struct ip_header {
+    u_char  Vhl;
+    u_char  Tos;
+    u_short Len;
+    u_short Id;
+    u_short Off;
+    u_char  Ttl;
+    u_char  P;
+    u_short Sum;
+    struct  in_addr Src_Ip, Dest_Ip;
+};
+
+#define IP_HL(ip)       (((ip)->Vhl) & 0x0f)
+#define IP_V(ip)        (((ip)->Vhl) >> 4)
+
+struct udp_header {
+    u_short Src_Prt;
+    u_short Dest_Prt;
+    u_short Len;
+    u_short Checksum;
+};
+
+struct tcp_header {
+    u_short Src_Prt;
+    u_short Dest_Prt;
+    u_int Seq;
+    u_int Ack_Seq;
+    u_char  Doff_Res;
+    u_char  Flags;
+    u_short Window;
+    u_short Checksum;
+    u_short Urg_Ptr;
+};
+
+std::string ip_to_string(const struct in_addr& Ip_Addr) {
+    char Ip_Str[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &Ip_Addr, Ip_Str, INET_ADDRSTRLEN);
+    return std::string(Ip_Str);
+}
+
+void parse_dns(const u_char* Data, int Size) {
+    if (Size < 12) return;
+    u_short Id = ntohs(*(u_short*)(Data));
+    u_short Flags = ntohs(*(u_short*)(Data + 2));
+    u_short Qdcount = ntohs(*(u_short*)(Data + 4));
+    u_short Ancount = ntohs(*(u_short*)(Data + 6));
+    std::ostringstream oss;
+    oss << "DNS Packet - ID: " << Id << ", Flags: 0x" << std::hex << Flags << std::dec
+        << ", Questions: " << Qdcount << ", Answers: " << Ancount;
+    log(oss.str());
+}
+
+void packet_handler(u_char* Param, const struct pcap_pkthdr* Header, const u_char* Pkt_Data) {
+    const u_char* Ip_Pck = Pkt_Data + ETHERNET_HEADER_SIZE;
+    struct ip_header* Ip = (struct ip_header*)Ip_Pck;
+
+    int Ip_Header_Len = IP_HL(Ip) * 4;
+    if (Ip_Header_Len < 20) return;
+    if (IP_V(Ip) != 4) return;
+
+    std::string Src_Ip_Str = ip_to_string(Ip->Src_Ip);
+    std::string Dest_Ip_Str = ip_to_string(Ip->Dest_Ip);
+
+    if (Ip->P == IPPROTO_UDP) {
+        const udp_header* Udp = (udp_header*)(Ip_Pck + Ip_Header_Len);
+        u_short Src_Prt = ntohs(Udp->Src_Prt);
+        u_short Dest_Prt = ntohs(Udp->Dest_Prt);
+
+        if (Src_Prt == 53 || Dest_Prt == 53) {
+            std::ostringstream oss;
+            oss << "[DNS - UDP] " << Src_Ip_Str << ":" << Src_Prt << " -> " << Dest_Ip_Str << ":" << Dest_Prt;
+            log(oss.str());
+            int Dns_Data_Len = ntohs(Udp->Len) - sizeof(udp_header);
+            const u_char* Dns_Data = Ip_Pck + Ip_Header_Len + sizeof(udp_header);
+            parse_dns(Dns_Data, Dns_Data_Len);
+        }
+    }
+    else if (Ip->P == IPPROTO_TCP) {
+        const tcp_header* Tcp = (tcp_header*)(Ip_Pck + Ip_Header_Len);
+        u_short Src_Prt = ntohs(Tcp->Src_Prt);
+        u_short Dest_Prt = ntohs(Tcp->Dest_Prt);
+
+        if (Src_Prt == 53 || Dest_Prt == 53) {
+            std::ostringstream oss;
+            oss << "[DNS - TCP] " << Src_Ip_Str << ":" << Src_Prt << " -> " << Dest_Ip_Str << ":" << Dest_Prt;
+            log(oss.str());
+            // DNS over TCP parsing can be added here
+        }
+        else if (Src_Prt == 179 || Dest_Prt == 179) {
+            std::ostringstream oss;
+            oss << "[BGP - TCP] " << Src_Ip_Str << ":" << Src_Prt << " -> " << Dest_Ip_Str << ":" << Dest_Prt;
+            log(oss.str());
+            // BGP parsing can be added here
+        }
+    }
+}
+
+int main() {
+    logFile.open("capture_output.log", std::ios::out);
+
+    pcap_if_t* All_Devs;
+    char Err_Buf[PCAP_ERRBUF_SIZE];
+
+    // Retrieve the device list
+    if (pcap_findalldevs(&All_Devs, Err_Buf) == -1) {
+        log(std::string("Error finding devices: ") + Err_Buf);
+        return 1;
+    }
+
+    // List all interfaces
+    std::vector<pcap_if_t*> dev_list;
+    int idx = 0;
+    log("Available network interfaces:");
+    for (pcap_if_t* d = All_Devs; d; d = d->next, ++idx) {
+        dev_list.push_back(d);
+        std::ostringstream oss;
+        oss << idx << ": " << d->name;
+        if (d->description) oss << " (" << d->description << ")";
+        log(oss.str());
+    }
+    if (dev_list.empty()) {
+        log("No devices found.");
+        pcap_freealldevs(All_Devs);
+        logFile.close();
+        return 1;
+    }
+
+    // Prompt user to select interface
+    int choice = -1;
+    do {
+        log("Select interface index: ");
+        std::cin >> choice;
+    } while (choice < 0 || choice >= (int)dev_list.size());
+
+    pcap_if_t* Device = dev_list[choice];
+
+    log(std::string("Using device: ") + Device->name);
+
+    // Open device for capture
+    pcap_t* Handle = pcap_open_live(Device->name, 65536, 1, 1000, Err_Buf);
+    if (!Handle) {
+        log(std::string("Could not open device: ") + Err_Buf);
+        pcap_freealldevs(All_Devs);
+        logFile.close();
+        return 1;
+    }
+
+    // Compile filter for DNS and BGP ports
+    struct bpf_program Fcode;
+    const char* Filter_Exp = "port 53 or port 179";
+    if (pcap_compile(Handle, &Fcode, Filter_Exp, 1, PCAP_NETMASK_UNKNOWN) < 0) {
+        log("Error compiling filter");
+        pcap_close(Handle);
+        pcap_freealldevs(All_Devs);
+        logFile.close();
+        return 1;
+    }
+
+    if (pcap_setfilter(Handle, &Fcode) < 0) {
+        log("Error setting filter");
+        pcap_close(Handle);
+        pcap_freealldevs(All_Devs);
+        logFile.close();
+        return 1;
+    }
+
+    log("Starting packet capture. Press Ctrl+C to stop...");
+
+    // Start capture loop
+    pcap_loop(Handle, 0, packet_handler, nullptr);
+
+    // Cleanup
+    pcap_freecode(&Fcode);
+    pcap_close(Handle);
+    pcap_freealldevs(All_Devs);
+
+    if (logFile.is_open()) {
+        logFile.close();
+    }
+
+    return 0;
+}
