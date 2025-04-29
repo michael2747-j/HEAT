@@ -4,21 +4,27 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <thread>
+#include <mutex>
 #include <winsock2.h>
 #include <ws2tcpip.h>
+
 #pragma comment(lib, "wpcap.lib")
 #pragma comment(lib, "ws2_32.lib")
 
 #define ETHERNET_HEADER_SIZE 14 // Standard Ethernet header size in bytes
 
-// Global log file stream
+// Global log file stream and mutex for thread-safe logging
 std::ofstream logFile;
+std::mutex logMutex;
 
-// Logging function: prints to console and writes to log file
+// Thread-safe logging function: prints to console and writes to log file
 void log(const std::string& msg) {
+    std::lock_guard<std::mutex> lock(logMutex);
     std::cout << msg << std::endl;
     if (logFile.is_open()) {
         logFile << msg << std::endl;
+        logFile.flush();
     }
 }
 
@@ -79,7 +85,7 @@ void parse_dns(const u_char* Data, int Size) {
     log(oss.str());
 }
 
-// Callback function for each captured packet
+// Packet handler callback for each captured packet
 void packet_handler(u_char* Param, const struct pcap_pkthdr* Header, const u_char* Pkt_Data) {
     // Skip Ethernet header to get to IP header
     const u_char* Ip_Pck = Pkt_Data + ETHERNET_HEADER_SIZE;
@@ -98,7 +104,7 @@ void packet_handler(u_char* Param, const struct pcap_pkthdr* Header, const u_cha
         u_short Src_Prt = ntohs(Udp->Src_Prt);
         u_short Dest_Prt = ntohs(Udp->Dest_Prt);
 
-        // Filter for DNS (port 53)
+        // DNS (port 53)
         if (Src_Prt == 53 || Dest_Prt == 53) {
             std::ostringstream oss;
             oss << "[DNS - UDP] " << Src_Ip_Str << ":" << Src_Prt << " -> " << Dest_Ip_Str << ":" << Dest_Prt;
@@ -113,107 +119,108 @@ void packet_handler(u_char* Param, const struct pcap_pkthdr* Header, const u_cha
         u_short Src_Prt = ntohs(Tcp->Src_Prt);
         u_short Dest_Prt = ntohs(Tcp->Dest_Prt);
 
-        // Filter for DNS (port 53)
+        // DNS (port 53)
         if (Src_Prt == 53 || Dest_Prt == 53) {
             std::ostringstream oss;
             oss << "[DNS - TCP] " << Src_Ip_Str << ":" << Src_Prt << " -> " << Dest_Ip_Str << ":" << Dest_Prt;
             log(oss.str());
-            // DNS over TCP parsing can be added here
+            // DNS over TCP parsing can be added here if needed
         }
-        // Filter for BGP (port 179)
+        // BGP (port 179)
         else if (Src_Prt == 179 || Dest_Prt == 179) {
             std::ostringstream oss;
             oss << "[BGP - TCP] " << Src_Ip_Str << ":" << Src_Prt << " -> " << Dest_Ip_Str << ":" << Dest_Prt;
             log(oss.str());
-            // BGP parsing can be added here
+            // BGP parsing can be added here if needed
         }
     }
 }
 
+// Thread function to start capture on a single device
+void capture_on_device(pcap_if_t* device) {
+    char errbuf[PCAP_ERRBUF_SIZE];
+    // Open the network interface for capturing
+    pcap_t* handle = pcap_open_live(device->name, 65536, 1, 1000, errbuf);
+    if (!handle) {
+        std::lock_guard<std::mutex> lock(logMutex);
+        std::cerr << "Failed to open device " << (device->description ? device->description : device->name)
+            << ": " << errbuf << std::endl;
+        return;
+    }
+
+    // Filter: DNS (53), BGP (179)
+    const char* filter_exp = "port 53 or port 179";
+    struct bpf_program filter;
+    if (pcap_compile(handle, &filter, filter_exp, 1, PCAP_NETMASK_UNKNOWN) == -1) {
+        std::lock_guard<std::mutex> lock(logMutex);
+        std::cerr << "Couldn't parse filter " << filter_exp << ": " << pcap_geterr(handle) << std::endl;
+        pcap_close(handle);
+        return;
+    }
+
+    if (pcap_setfilter(handle, &filter) == -1) {
+        std::lock_guard<std::mutex> lock(logMutex);
+        std::cerr << "Couldn't install filter: " << pcap_geterr(handle) << std::endl;
+        pcap_freecode(&filter);
+        pcap_close(handle);
+        return;
+    }
+
+    pcap_freecode(&filter);
+
+    // Log start of capture on this interface
+    {
+        std::lock_guard<std::mutex> lock(logMutex);
+        std::cout << "Started capturing on interface: "
+            << (device->description ? device->description : device->name) << std::endl;
+        if (logFile.is_open()) {
+            logFile << "Started capturing on interface: "
+                << (device->description ? device->description : device->name) << std::endl;
+            logFile.flush();
+        }
+    }
+
+    // Start packet capture loop (runs until interrupted)
+    pcap_loop(handle, 0, packet_handler, nullptr);
+
+    pcap_close(handle);
+}
+
 int main() {
-    // Open log file for writing
-    logFile.open("capture_output.log", std::ios::out);
-
-    pcap_if_t* All_Devs;
-    char Err_Buf[PCAP_ERRBUF_SIZE];
-
-    // Retrieve the list of available network devices
-    if (pcap_findalldevs(&All_Devs, Err_Buf) == -1) {
-        log(std::string("Error finding devices: ") + Err_Buf);
+    // Open log file
+    logFile.open("capture_output.log", std::ios::out | std::ios::app);
+    if (!logFile.is_open()) {
+        std::cerr << "Failed to open log file for writing." << std::endl;
         return 1;
     }
 
-    // List all available interfaces for user selection
-    std::vector<pcap_if_t*> dev_list;
-    int idx = 0;
-    log("Available network interfaces:");
-    for (pcap_if_t* d = All_Devs; d; d = d->next, ++idx) {
-        dev_list.push_back(d);
-        std::ostringstream oss;
-        oss << idx << ": " << d->name;
-        if (d->description) oss << " (" << d->description << ")";
-        log(oss.str());
-    }
-    if (dev_list.empty()) {
-        log("No devices found.");
-        pcap_freealldevs(All_Devs);
+    pcap_if_t* alldevs;
+    char errbuf[PCAP_ERRBUF_SIZE];
+
+    // Find all available network devices
+    if (pcap_findalldevs(&alldevs, errbuf) == -1 || alldevs == nullptr) {
+        log(std::string("Error finding devices: ") + errbuf);
         logFile.close();
         return 1;
     }
 
-    // Prompt user to select the desired network interface
-    int choice = -1;
-    do {
-        log("Select interface index: ");
-        std::cin >> choice;
-    } while (choice < 0 || choice >= (int)dev_list.size());
-
-    pcap_if_t* Device = dev_list[choice];
-
-    log(std::string("Using device: ") + Device->name);
-
-    // Open the selected device for packet capture
-    pcap_t* Handle = pcap_open_live(Device->name, 65536, 1, 1000, Err_Buf);
-    if (!Handle) {
-        log(std::string("Could not open device: ") + Err_Buf);
-        pcap_freealldevs(All_Devs);
-        logFile.close();
-        return 1;
+    // Start a capture thread for each interface
+    std::vector<std::thread> threads;
+    for (pcap_if_t* d = alldevs; d != nullptr; d = d->next) {
+        threads.emplace_back(capture_on_device, d);
     }
 
-    // Compile and set a filter for DNS and BGP ports
-    struct bpf_program Fcode;
-    const char* Filter_Exp = "port 53 or port 179";
-    if (pcap_compile(Handle, &Fcode, Filter_Exp, 1, PCAP_NETMASK_UNKNOWN) < 0) {
-        log("Error compiling filter");
-        pcap_close(Handle);
-        pcap_freealldevs(All_Devs);
-        logFile.close();
-        return 1;
+    log("Capturing on all available interfaces...");
+    log("Press Ctrl+C to stop.");
+
+    // Wait for all threads to finish (which will be when the program is interrupted)
+    for (auto& t : threads) {
+        if (t.joinable())
+            t.join();
     }
 
-    if (pcap_setfilter(Handle, &Fcode) < 0) {
-        log("Error setting filter");
-        pcap_close(Handle);
-        pcap_freealldevs(All_Devs);
-        logFile.close();
-        return 1;
-    }
-
-    log("Starting packet capture. Press Ctrl+C to stop...");
-
-    // Start the main capture loop (runs until interrupted)
-    pcap_loop(Handle, 0, packet_handler, nullptr);
-
-    // Cleanup resources
-    pcap_freecode(&Fcode);
-    pcap_close(Handle);
-    pcap_freealldevs(All_Devs);
-
-    // Close the log file
-    if (logFile.is_open()) {
-        logFile.close();
-    }
+    pcap_freealldevs(alldevs);
+    logFile.close();
 
     return 0;
 }
