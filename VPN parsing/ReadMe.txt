@@ -1,4 +1,4 @@
-In order to run this code, load up your visual studio code as administrator.
+In order to run this code, load up your visual studio code as administrator.  Ensure that pcap.h is install and included in your directories for visual studio.
 
 Then, to test the code, download and install Iperf.  Once that's done, unzip it to a folder, and open the sub folder (for me its iperf3.16_64) up in two separate command prompt terminals.
 
