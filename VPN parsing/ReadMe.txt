@@ -1,4 +1,10 @@
 In order to run this code, load up your visual studio code as administrator.  Ensure that pcap.h is installed and included in your directories for visual studio.
+go to this website:  https://npcap.com/#download
+and download the installer, and the SDK put the SDK in a known directory, IE your desktop.  Then in your Visual Studio (The purple community one), navigate to your solution explorer.
+Once you are there in your solution explorer, right click the first file under your solution file (See Screenshot 1) and click properties.
+Then, copy paste the directory of your basic SDK folder into the C++ include directories (See Screenshot 2).
+Then, under linker general, add the include directory of your SDK librarry x64 files to your additional library dependencies (See Screenshot 3)
+Finally, under the linker input tab, copy this line:  wpcap.lib;Packet.lib;ws2_32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies) into the Additional Dependencies tab (See Screenshot 4)
 
 Then, to test the code, download and install Iperf.  Once that's done, unzip it to a folder, and open the sub folder (for me its iperf3.16_64) up in two separate command prompt terminals.
 
