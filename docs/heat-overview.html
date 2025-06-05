@@ -1,1 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>H.E.A.T. - Project Overview</title>
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: #ffffff;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1, h2, h3 {
+      color: #ff9900;
+    }
+    a {
+      color: #ff9900;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #444;
+      margin: 30px 0;
+    }
+  </style>
+</head>
+<body>
 
+  <h1>🔥 H.E.A.T. - Header-based Ether Adapter Tracking</h1>
+  <p><strong>Automated VyOS configuration generation from live network traffic.</strong></p>
+
+  <h2>🌐 What Is H.E.A.T.?</h2>
+  <p><strong>H.E.A.T.</strong> is a cross-platform system designed to transform any device — desktop or mobile — into a <em>network configuration wizard</em>.</p>
+  <ul>
+    <li>Scan real network traffic</li>
+    <li>Parse DNS, VLAN, BGP, DHCP, VPN, and more</li>
+    <li>Generate secure, deployable VyOS configurations</li>
+    <li>Push configs to routers in one click</li>
+  </ul>
+
+  <h2>🎯 Project Goal</h2>
+  <p>“Turn smartphones and PCs into plug-and-play network config wizards.”</p>
+  <p>With real-time packet capture, HEAT builds tailored VyOS configs in under 2 minutes — no CLI needed.</p>
+
+  <h2>🧱 Core Architecture</h2>
+  <ul>
+    <li>🖥 Windows App – built with WinUI 3 and .NET</li>
+    <li>📱 Android App – Kotlin/NDK-based mobile interface</li>
+    <li>⚙️ C++ Modules – fast native packet parsers</li>
+    <li>🛠 VyOS Config Generator – config output layer</li>
+    <li>📤 SSH Export – deploy config using libssh</li>
+  </ul>
+
+  <h2>💡 Key Requirements (from David)</h2>
+  <ul>
+    <li>🕐 Fast: generate basic configs in under 2 mins</li>
+    <li>🔍 Capture: DNS, DHCP, VLAN, NAT, AD controllers</li>
+    <li>✅ Export: ready-to-use VyOS config file</li>
+    <li>🧪 Test: virtualized networks with VyOS in Proxmox</li>
+    <li>🛡️ Security: detect anomalies, alert users</li>
+    <li>📱 Extensible: Windows + Android now, iOS later</li>
+  </ul>
+
+  <h2>🔀 Branch Overview</h2>
+  <ul>
+    <li><strong>main</strong> – 📘 Docs, roadmap, coordination</li>
+    <li><strong>windows-app</strong> – 🖥 Desktop implementation</li>
+    <li><strong>android-app</strong> – 📱 Mobile interface</li>
+    <li><strong>cpp-modules</strong> – ⚙️ Shared packet parsers</li>
+  </ul>
+
+  <h2>📦 Features</h2>
+  <ul>
+    <li>Scan ➝ Parse ➝ Generate Config</li>
+    <li>Detect services: DNS, VPN, VLAN, BGP, NAT</li>
+    <li>Preview configs in the UI before exporting</li>
+    <li>Security alerting & logging</li>
+    <li>Push config to router via SSH</li>
+  </ul>
+
+  <h2>📜 License</h2>
+  <p>MIT License – free to use, modify, and distribute.</p>
+
+</body>
+</html>
