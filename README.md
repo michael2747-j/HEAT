@@ -2,7 +2,7 @@
 
 <table>
   <tr>
-    <td><img src="docs/heat.png" alt="H.E.A.T. Logo" width="120" style="border-radius:12px;"/></td>
+    <td><img src="docs/heat.png" alt="H.E.A.T. Logo" width="160" style="border-radius:12px;"/></td>
     <td>
       <h3>H.E.A.T. – Header-based Ether Adapter Tracking</h3>
       <p><strong>Automated VyOS configuration generation directly from live network traffic.</strong><br/>
