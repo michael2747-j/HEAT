@@ -1,86 +1,55 @@
-# HEAT
-Hands-on exploration of DNS servers, packet sniffing (promiscuous mode), and VyOS-based routing. Great for students, sysadmins, and network enthusiasts.
-An intelligent tool to automatically generate VyOS router configurations from real-world network traffic taps.
+# 🧠 H.E.A.T. Parsing Modules
 
-🚀 Built as part of an internship project for ADAMnetworks
-🎯 Targeting VyOS 1.5 with support for dynamic multi-WAN/LAN, NATs, VPNs, and more
-🧠 AI-inspired UX for real-time config generation
-📱 Runs locally—even on a smartphone with USB Ethernet
+High-speed, cross-platform C++ modules for real-time network traffic analysis.  
+These native modules power the detection engine behind the H.E.A.T. Android and Windows applications, capturing low-level packet data and translating it into actionable configuration elements for VyOS routers.
 
-🧭 Executive Summary
-ADAMnetworks requires a simple, intelligent, and portable tool to help enterprises build VyOS configurations using observed network traffic via a network tap. This includes:
+---
 
-WAN/DMZ + Internal LAN Configuration
+## 🌐 Purpose
 
-Support for NAT, Port Forwards, Routing, VPNs, and DHCP
+The parsing modules serve as the core intelligence layer of the H.E.A.T. system. Their responsibilities include:
 
-Deep Traffic Inspection to detect:
+- Capturing Ethernet-level traffic (raw packets)
+- Parsing protocols like DNS, DHCP, VLAN, BGP, and OSPF
+- Extracting relevant data such as domain queries, port usage, VPN tunnels, rogue DHCPs, and more
+- Feeding structured output to the VyOS configuration engine in the Windows and Android apps
 
-DNS Servers
+---
 
-Active Directory controllers
+## 📁 File Overview
 
-Routing protocols (e.g., OSPF, BGP)
+| File                     | Description                                                     |
+|--------------------------|-----------------------------------------------------------------|
+| `BG-Realtime-Parsing.cpp`| Real-time capture and classification of background network data |
+| ospf_esp.cpp           | Parses OSPF traffic and detects encapsulated ESP packets        |
+| ospfesp.cpp            | Alternate/combined OSPF and ESP handling logic                  |
 
-VPN tunnels (via port/protocol detection)
+> These modules interface with platform-specific wrappers (NDK for Android, WinPcap for Windows).
 
-BONUS: Optional support for adam:ONE deployment
+---
 
-⚙️ Features
-🔍 Passive detection of pre-NAT and post-NAT traffic flows
+## 🧱 Integration Targets
 
-🔌 Support for 2+ WAN and 2+ LAN interfaces (Layer 2 & 3)
+| Platform      | Integration       | Purpose                                 |
+|---------------|-------------------|------------------------------------------|
+| Android       | JNI + NDK         | Kotlin-based UI, traffic analysis engine |
+| Windows       | P/Invoke or bridge| WinUI 3 app + config generator           |
 
-🧠 Real-time, LLM-inspired code output UI
+---
 
-📱 Mobile-friendly POC on Android using USB Ethernet adapter
+## ⚙️ How It Works
 
-🧠 Traffic inspection includes:
+1. Traffic is captured either from a live interface or through a PCAP file.
+2. Each module identifies key protocol patterns (e.g., DHCP offers, VLAN tags, DNS queries).
+3. Output is passed to the configuration layer as structured data.
+4. This data is used to generate full VyOS-ready configuration files.
 
-DNS requests + responses (including SRV for AD discovery)
+---
 
-Routing protocol detection (e.g., BGP, OSPF)
+## 🧪 Testing Locally
 
-VPN ports
+You can build and run a parser on a sample .pcap file like so:
 
-DHCP fingerprinting
-
-🧩 Extensible for future traffic analysis modules
-
-🧪 Development & Testing Platform
-SG-3100 + Unifi 8-port switch (pre-configured)
-
-VyOS 1.5 on Lanner box
-
-Android with USB Ethernet adapter (support for promiscuous mode required)
-
-Cross-platform: Linux, MacOS, Windows (via Python)
-
-🧠 Architecture Highlights
-Promiscuous Packet Capture (e.g., scapy, libpcap, or pyshark)
-
-Stateful Analysis Engine to detect network services and traffic patterns
-
-VyOS Configuration Engine that emits CLI-config-formatted blocks
-
-Optional AI-style UI that reveals configs dynamically as traffic is observed
-
-📅 Timeline (2025)
-April 22: Project Kickoff
-
-April 24–26: Discovery & Feasibility (Review #1)
-
-April 28: Hardware distribution (meetup near YYZ)
-
-June 6: Review #2 (midpoint)
-
-July 18: Review #3 (alpha release)
-
-August TBD: Final presentation
-
-📞 Contacts
-Nick Neufeld: support@adamnet.works | Signal: 519-854-8849
-
-Steve Sansford: Signal: 506-655-9860
-
-General Inquiries: info@adamnet.works
+```bash
+g++ -std=c++17 -o test_parser ospf_esp.cpp
+./test_parser test_capture.pcap
