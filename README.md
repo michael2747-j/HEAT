@@ -1,5 +1,8 @@
 # 🔥 H.E.A.T. – Header-based Ether Adapter Tracking
 
+<p align="center">
+  <img src="docs/heat.png" alt="H.E.A.T. Logo" width="200"/>
+</p>
 Automated VyOS configuration generation from live network traffic.  
 Built to transform devices into plug-and-play network config wizards.
 
