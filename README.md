@@ -1,10 +1,15 @@
 # 🔥 H.E.A.T. – Header-based Ether Adapter Tracking
 
-<p align="center">
-  <img src="docs/heat.png" alt="H.E.A.T. Logo" width="200"/>
-</p> Automatically generates VyOS firewall and routing configurations by analyzing live network traffic — transforming desktops and mobile devices into intelligent, plug-and-play network provisioning tools.
-
-
+<table>
+  <tr>
+    <td><img src="docs/heat.png" alt="H.E.A.T. Logo" width="120" style="border-radius:12px;"/></td>
+    <td>
+      <h3>H.E.A.T. – Header-based Ether Adapter Tracking</h3>
+      <p><strong>Automated VyOS configuration generation directly from live network traffic.</strong><br/>
+      Built to transform everyday devices into intelligent, plug-and-play network configuration wizards capable of analyzing, interpreting, and deploying secure router setups in minutes.</p>
+    </td>
+  </tr>
+</table>
 
 ---
 
