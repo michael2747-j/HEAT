@@ -39,7 +39,7 @@ Using real-time traffic analysis, H.E.A.T. automates secure VyOS firewall and ro
 |--------------------|-------------------------------------------------------|
 | 🖥 Windows App      | Built with WinUI 3 + .NET for desktop deployment      |
 | 📱 Android App      | Mobile app (Kotlin + NDK) for on-the-go config        |
-| ⚙️ C++ Modules       | Shared native parsers for DNS, BGP, DHCP, VLAN, VPN   |
+| ⚙️ C# Modules       | Shared native parsers for DNS, BGP, DHCP, VLAN, VPN   |
 | 🛠 Config Generator  | Logic layer for turning parsed data into VyOS configs |
 | 📤 SSH Export       | Push generated config to router using libssh          |
 
