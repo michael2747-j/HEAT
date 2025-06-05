@@ -16,19 +16,6 @@ This application is built with the following technologies:
  • Native C++ modules (optional) 🔧 – Integrated via C++/WinRT or P/Invoke for performance-critical components (shared with other platform implementations).
  • MVVM Architecture – Clean separation of UI and logic using the Model-View-ViewModel pattern (facilitated by libraries like Windows Community Toolkit MVVM).
 
-Folder Structure 📁
-
-Below is an overview of the repository structure for the windows-app branch:
-Features ✨
-
-The HEAT Windows App includes a range of features to provide a rich user experience:
- • Modern Fluent UI: Leverages WinUI 3 controls and styles for a slick, responsive interface that feels at home on Windows 11.
- • Seamless Performance: Critical operations are offloaded to native C++ modules for speed 🔧, ensuring smooth performance even with heavy workloads.
- • Cross-Platform Sync: Ensures feature parity and data synchronization with the Android app, so users can switch between devices effortlessly (when paired with a common backend or data store).
- • Offline Capability: Works fully offline for core functionalities, syncing data when connectivity is restored (if applicable to project domain).
- • Extensibility: Built with a modular architecture, making it easy to update, maintain, and even integrate additional platform modules or services in the future.
-
-(Feel free to modify or add features based on the actual project specifics. The above are generic examples highlighting common strengths of a WinUI 3 app in a cross-platform project.)
 
 Getting Started 🚀
 
