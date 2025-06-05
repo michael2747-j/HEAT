@@ -1,1 +1,1 @@
-🔗 [Project Overview (HTML)](docs/heat-overview.html)
+📄 [View Project Overview](docs/heat-overview.html)
