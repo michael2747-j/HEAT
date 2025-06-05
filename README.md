@@ -53,3 +53,15 @@ You can build and run a parser on a sample .pcap file like so:
 ```bash
 g++ -std=c++17 -o test_parser ospf_esp.cpp
 ./test_parser test_capture.pcap
+> Replace sample.pcap with a valid capture file for test input.
+
+To test end-to-end on Android:
+
+- Connect an OTG-compatible USB Ethernet adapter
+- Accept permissions when prompted
+- Tap Scan Network
+- Monitor live detection of protocols and services
+
+---
+
+## 📂 Folder Layout
