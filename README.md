@@ -63,7 +63,7 @@ Using real-time traffic analysis, H.E.A.T. automates secure VyOS firewall and ro
 | main          | 📘 Docs, coordination, planning                     |
 | windows-app   | 🖥 Desktop UI + config generation pipeline           |
 | android-app   | 📱 Mobile app for network scanning + config build   |
-| cpp-modules   | ⚙️ Native C++ packet analyzers (used by both apps)  |
+| cpp-modules   | ⚙️ Native C# packet analyzers (used by both apps)  |
 
 Each branch includes a README.md with platform-specific setup instructions.
 
