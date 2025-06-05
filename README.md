@@ -1,86 +1,72 @@
-# HEAT
-Hands-on exploration of DNS servers, packet sniffing (promiscuous mode), and VyOS-based routing. Great for students, sysadmins, and network enthusiasts.
-An intelligent tool to automatically generate VyOS router configurations from real-world network traffic taps.
+# 📱 H.E.A.T. Android App – Header-based Ether Adapter Tracking
 
-🚀 Built as part of an internship project for ADAMnetworks
-🎯 Targeting VyOS 1.5 with support for dynamic multi-WAN/LAN, NATs, VPNs, and more
-🧠 AI-inspired UX for real-time config generation
-📱 Runs locally—even on a smartphone with USB Ethernet
+Mobile VyOS config generation from real-time network traffic.  
+A fast, intuitive Android application that scans local networks and builds deployable VyOS configurations.
 
-🧭 Executive Summary
-ADAMnetworks requires a simple, intelligent, and portable tool to help enterprises build VyOS configurations using observed network traffic via a network tap. This includes:
+---
 
-WAN/DMZ + Internal LAN Configuration
+## 🌐 Overview
 
-Support for NAT, Port Forwards, Routing, VPNs, and DHCP
+The H.E.A.T. Android app turns your smartphone into a portable network configuration assistant. Designed for system administrators, field engineers, and educators, the app allows users to:
 
-Deep Traffic Inspection to detect:
+- Connect to a live network (via Wi-Fi or USB adapter)
+- Capture traffic and detect services (DNS, DHCP, VPN, VLAN, etc.)
+- Generate tailored, production-ready VyOS configurations in minutes
+- Optionally share or push the config to a router over SSH
 
-DNS Servers
+---
 
-Active Directory controllers
+## 🎯 Goal
 
-Routing protocols (e.g., OSPF, BGP)
+> _“Scan a network in the field, generate the VyOS config, and deploy it on the spot.”_
 
-VPN tunnels (via port/protocol detection)
+This app is part of the broader H.E.A.T. ecosystem, providing mobile-first access to the same intelligent parsing and config-generation capabilities found in the desktop version.
 
-BONUS: Optional support for adam:ONE deployment
+---
 
-⚙️ Features
-🔍 Passive detection of pre-NAT and post-NAT traffic flows
+## 🧱 Architecture
 
-🔌 Support for 2+ WAN and 2+ LAN interfaces (Layer 2 & 3)
+| Layer               | Description                                          |
+|---------------------|------------------------------------------------------|
+| Kotlin UI           | Android front-end, built with Jetpack and Material  |
+| Native C++ Modules  | Parses network traffic via NDK (shared with desktop)|
+| USB/Permissions     | Handles adapter access (OTG Ethernet or USB-C)      |
+| Config Builder      | Converts parsed data into VyOS config output        |
+| SSH Integration     | Optional: send config to VyOS router via libssh     |
 
-🧠 Real-time, LLM-inspired code output UI
+---
 
-📱 Mobile-friendly POC on Android using USB Ethernet adapter
+## 📦 Key Features
 
-🧠 Traffic inspection includes:
+- 🌐 Auto-scans local networks
+- 🔍 Detects DNS servers, rogue DHCPs, VLANs, NAT rules, VPN tunnels
+- 🧠 Uses shared C++ logic for parsing traffic (via Android NDK)
+- ⚙️ Generates full VyOS config files (including interface, DHCP, BGP)
+- 📤 Exports config via:
+  - Save to file
+  - Share via apps
+  - Push via SSH (optional)
+- 🧪 Real-time progress indicators and detection logs
+- 🛡️ Alerts for suspicious traffic or unknown services
 
-DNS requests + responses (including SRV for AD discovery)
+---
 
-Routing protocol detection (e.g., BGP, OSPF)
+## 🧪 Testing Scenarios
 
-VPN ports
+| Scenario                | Expected Output                                 |
+|-------------------------|--------------------------------------------------|
+| Small home Wi-Fi        | Basic config with DHCP, DNS, single interface    |
+| VLAN-segmented network  | Config includes interfaces { vlan X { ... }}   |
+| Office LAN with VPN     | Detect VPN services and generate NAT rules       |
+| Malformed DNS queries   | Flag suspicious domain patterns in app alerts    |
 
-DHCP fingerprinting
+---
 
-🧩 Extensible for future traffic analysis modules
+## 🚀 Getting Started
 
-🧪 Development & Testing Platform
-SG-3100 + Unifi 8-port switch (pre-configured)
+### Prerequisites
+- Android Studio Hedgehog or newer
+- NDK installed (via SDK Manager)
+- USB OTG-capable Android device
+- Optionally: USB Ethernet adapter for live testing
 
-VyOS 1.5 on Lanner box
-
-Android with USB Ethernet adapter (support for promiscuous mode required)
-
-Cross-platform: Linux, MacOS, Windows (via Python)
-
-🧠 Architecture Highlights
-Promiscuous Packet Capture (e.g., scapy, libpcap, or pyshark)
-
-Stateful Analysis Engine to detect network services and traffic patterns
-
-VyOS Configuration Engine that emits CLI-config-formatted blocks
-
-Optional AI-style UI that reveals configs dynamically as traffic is observed
-
-📅 Timeline (2025)
-April 22: Project Kickoff
-
-April 24–26: Discovery & Feasibility (Review #1)
-
-April 28: Hardware distribution (meetup near YYZ)
-
-June 6: Review #2 (midpoint)
-
-July 18: Review #3 (alpha release)
-
-August TBD: Final presentation
-
-📞 Contacts
-Nick Neufeld: support@adamnet.works | Signal: 519-854-8849
-
-Steve Sansford: Signal: 506-655-9860
-
-General Inquiries: info@adamnet.works
