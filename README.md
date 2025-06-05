@@ -2,9 +2,9 @@
 
 <p align="center">
   <img src="docs/heat.png" alt="H.E.A.T. Logo" width="200"/>
-</p>
-Automated VyOS configuration generation from live network traffic.  
-Built to transform devices into plug-and-play network config wizards.
+</p> Automatically generates VyOS firewall and routing configurations by analyzing live network traffic — transforming desktops and mobile devices into intelligent, plug-and-play network provisioning tools.
+
+
 
 ---
 
