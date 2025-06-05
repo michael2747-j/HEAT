@@ -1,0 +1,103 @@
+<!--
+    File: Links.xaml
+    Purpose: Displays product links, media/social links, and cybersecurity awareness resources for HEAT app
+    Created: June 3 2025
+    Last Modified: June 4 2025
+    Authors: Anthony Samen / Michael Melles
+-->
+
+<UserControl
+    x:Class="HEAT.Links" <!-- Sets code-behind class for this user control -->
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" <!-- Imports UI elements namespace -->
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" <!-- Imports XAML language features -->
+    xmlns:local="using:HEAT" <!-- Imports local project namespace -->
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"> <!-- Imports WinUI controls namespace -->
+
+    <!-- Use a Grid to control layout -->
+    <Grid Margin="32" Background="Transparent"> <!-- Main grid with outer margin and transparent background -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Row 0: Product links title -->
+            <RowDefinition Height="Auto" /> <!-- Row 1: Product links list -->
+            <RowDefinition Height="Auto" /> <!-- Row 2: Media/social/cybersecurity links -->
+        </Grid.RowDefinitions>
+
+        <!-- Products Section -->
+        <TextBlock Text="Product Links" FontSize="28" FontWeight="Bold" Margin="0,0,0,12" Foreground="White" Grid.Row="0"/> <!-- Section title for products -->
+
+        <!-- Wrap product items horizontally and wrap to next line if needed -->
+        <ItemsControl Grid.Row="1" Margin="0,0,0,24"> <!-- Product links list, bottom margin for spacing -->
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3" HorizontalAlignment="Left" /> <!-- Wraps items horizontally, max 3 rows, left aligned -->
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,0,24,24" Width="280"> <!-- Each product: horizontal stack, spacing, margin, fixed width -->
+                        <Image Source="{Binding Image}" Width="80" Height="80" Stretch="UniformToFill" /> <!-- Product image, fixed size -->
+                        <StackPanel>
+                            <TextBlock Foreground="White" FontWeight="Bold"> <!-- Product name as hyperlink -->
+                                <Hyperlink NavigateUri="{Binding Link}" Foreground="White" TextDecorations="Underline">
+                                    <Run Text="{Binding Name}"/>
+                                </Hyperlink>
+                            </TextBlock>
+                            <TextBlock Text="{Binding Price}" Foreground="#FFD700" FontWeight="SemiBold" Margin="0,4,0,0"/> <!-- Product price, gold color, margin above -->
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- Media & Social Section -->
+        <StackPanel Grid.Row="2"> <!-- Stack panel for media/social/cybersecurity sections -->
+            <TextBlock Text="Media &amp; Social" FontSize="28" FontWeight="Bold" Margin="0,0,0,12" Foreground="White"/> <!-- Section title for media/social -->
+            <StackPanel Orientation="Horizontal" Spacing="32" HorizontalAlignment="Left" Margin="0,0,0,24"> <!-- Social links, horizontal, spaced, left aligned, bottom margin -->
+                <TextBlock Foreground="White" FontWeight="Bold">
+                    <Hyperlink NavigateUri="https://www.youtube.com/@adamnetwrx/" Foreground="White" TextDecorations="Underline">
+                        YouTube
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Foreground="White" FontWeight="Bold">
+                    <Hyperlink NavigateUri="https://x.com/adam_networks" Foreground="White" TextDecorations="Underline">
+                        Twitter
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Foreground="White" FontWeight="Bold">
+                    <Hyperlink NavigateUri="https://www.linkedin.com/company/adamnetwx/?lipi=urn%3Ali%3Apage%3Ad_flagship3_search_srp_all%3BB55PZW67Tb6YNbh4dv5bdw%3D%3D" Foreground="White" TextDecorations="Underline">
+                        LinkedIn
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Foreground="White" FontWeight="Bold">
+                    <Hyperlink NavigateUri="https://www.facebook.com/" Foreground="White" TextDecorations="Underline">
+                        Facebook
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+
+            <!-- Cybersecurity Awareness Section -->
+            <TextBlock Text="Cybersecurity Awareness" FontSize="28" FontWeight="Bold" Margin="0,0,0,12" Foreground="White"/> <!-- Section title for cybersecurity -->
+            <StackPanel Spacing="8"> <!-- Vertical stack for cybersecurity resource links, spaced -->
+                <TextBlock Foreground="White" FontWeight="Bold">
+                    <Hyperlink NavigateUri="https://owasp.org/" Foreground="White" TextDecorations="Underline">
+                        OWASP (Open Web Application Security Project)
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Foreground="White" FontWeight="Bold">
+                    <Hyperlink NavigateUri="https://www.cyber.gov.au/" Foreground="White" TextDecorations="Underline">
+                        Australian Cyber Security Centre
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Foreground="White" FontWeight="Bold">
+                    <Hyperlink NavigateUri="https://www.cisa.gov/" Foreground="White" TextDecorations="Underline">
+                        US Cybersecurity &amp; Infrastructure Security Agency (CISA)
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Foreground="White" FontWeight="Bold">
+                    <Hyperlink NavigateUri="https://staysafeonline.org/" Foreground="White" TextDecorations="Underline">
+                        Stay Safe Online
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
