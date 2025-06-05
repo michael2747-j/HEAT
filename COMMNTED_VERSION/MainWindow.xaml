@@ -1,0 +1,134 @@
+<!--
+    File: MainWindow.xaml
+    Purpose: Defines main window layout for HEAT app, including navigation, notifications, and settings
+    Created: June 2 2025
+    Last Modified: June 4 2025
+    Authors: Anthony Samen / Cody Cartwright
+-->
+
+<Window
+    x:Class="HEAT.MainWindow" <!-- Sets code-behind class for main window -->
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" <!-- Imports UI elements namespace -->
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" <!-- Imports XAML language features -->
+    xmlns:local="using:HEAT" <!-- Imports local project namespace -->
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" <!-- Imports WinUI controls namespace -->
+    Title="HEAT"> <!-- Sets window title -->
+    <Grid x:Name="RootGrid" Background="#141414"> <!-- Main grid, dark background -->
+        <Grid.Resources>
+            <Style x:Key="NoBorderFlyoutPresenterStyle" TargetType="FlyoutPresenter"> <!-- Style for borderless flyouts -->
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="MinWidth" Value="0"/>
+                <Setter Property="MinHeight" Value="0"/>
+                <Setter Property="Shadow" Value="{x:Null}"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Row 0: Navigation bar -->
+            <RowDefinition Height="*"/> <!-- Row 1: Main content area -->
+        </Grid.RowDefinitions>
+
+        <!-- Top Navigation Bar -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/> <!-- Column 0: Notification bell -->
+                <ColumnDefinition Width="*"/> <!-- Column 1: Tabs -->
+                <ColumnDefinition Width="Auto"/> <!-- Column 2: Settings gear -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Notification Bell -->
+            <Button x:Name="NotificationBell"
+                    Style="{StaticResource IconButtonStyle}"
+                    Width="36" Height="36"
+                    Margin="10,4,0,4"
+                    VerticalAlignment="Top"
+                    Click="NotificationBell_Click"> <!-- Notification bell button, triggers flyout -->
+                <muxc:FontIcon Glyph="&#xE7ED;" Foreground="{StaticResource IconColor}" Width="36" Height="36"/> <!-- Bell icon -->
+                <Button.Flyout>
+                    <Flyout x:Name="NotificationFlyout"
+                            Placement="Bottom"
+                            FlyoutPresenterStyle="{StaticResource NoBorderFlyoutPresenterStyle}"> <!-- Custom flyout style -->
+                        <Border Background="#22252A"
+                                BorderBrush="{StaticResource BorderBlue}"
+                                BorderThickness="4"
+                                CornerRadius="8">
+                            <StackPanel Width="320" Background="#22252A" Padding="8">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,4">
+                                    <Button Content="Clear All Notifications"
+                                            Click="ClearNotifications_Click"
+                                            FontSize="12"
+                                            Padding="6,2"
+                                            Margin="0,0,4,0"/> <!-- Button to clear notifications -->
+                                </StackPanel>
+                                <ScrollViewer MaxHeight="300" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl x:Name="NotificationList"/> <!-- Displays notification messages -->
+                                </ScrollViewer>
+                            </StackPanel>
+                        </Border>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+
+            <!-- Tabs -->
+            <StackPanel Grid.Column="1" 
+                       Orientation="Horizontal" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Top" 
+                       Margin="0,14,0,0"> <!-- Tab navigation, centered horizontally -->
+                <Button x:Name="HomeTab" Content="Home" Style="{StaticResource TabButtonStyle}" Click="Tab_Click"/> <!-- Home tab button -->
+                <Button x:Name="DashboardTab" Content="Dashboard" Style="{StaticResource TabButtonStyle}" Click="Tab_Click"/> <!-- Dashboard tab button -->
+                <Button x:Name="LinksTab" Content="Links" Style="{StaticResource TabButtonStyle}" Click="Tab_Click"/> <!-- Links tab button -->
+                <Button x:Name="UpgradesTab" Content="Upgrades" Style="{StaticResource TabButtonStyle}" Click="Tab_Click"/> <!-- Upgrades tab button -->
+            </StackPanel>
+
+            <!-- Settings Gear -->
+            <Button x:Name="SettingsButton"
+                    Grid.Column="2"
+                    Style="{StaticResource IconButtonStyle}"
+                    Width="36" Height="36"
+                    Margin="0,4,10,4"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Click="SettingsButton_Click"> <!-- Settings gear button, triggers flyout -->
+                <muxc:FontIcon Glyph="&#xE713;" Foreground="{StaticResource IconColor}" Width="36" Height="36"/> <!-- Gear icon -->
+                <Button.Flyout>
+                    <Flyout x:Name="SettingsFlyout"
+                            Placement="Bottom"
+                            FlyoutPresenterStyle="{StaticResource NoBorderFlyoutPresenterStyle}"> <!-- Custom flyout style for settings -->
+                        <Border Background="#22252A"
+                                BorderBrush="{StaticResource BorderBlue}"
+                                BorderThickness="4"
+                                CornerRadius="8">
+                            <StackPanel Width="320" Background="#22252A" Padding="8" Spacing="8">
+                                <TextBlock x:Name="ReleaseVersionText" Text="v1.0.0" Foreground="White" FontWeight="Bold" FontSize="16" Margin="4,0,0,4"/> <!-- Displays app version -->
+                                <Rectangle Height="1" Fill="{StaticResource BorderBlue}" Margin="0,2,0,2"/> <!-- Divider line -->
+                                <Button Content="Check for Updates" Click="CheckForUpdates_Click" FontSize="14" Padding="8,4"/> <!-- Update check button -->
+                                <Button Content="Replay Tutorial" Click="ReplayTutorial_Click" FontSize="14" Padding="8,4"/> <!-- Replay tutorial button -->
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="Debug Mode" Foreground="White" FontSize="14" VerticalAlignment="Center" Margin="0,0,8,0"/> <!-- Debug mode label -->
+                                    <ToggleSwitch x:Name="DebugModeToggle" OffContent="Off" OnContent="On" IsOn="False" Toggled="DebugModeToggle_Toggled"/> <!-- Debug mode toggle -->
+                                </StackPanel>
+                                <Button Content="About H.E.A.T" Click="AboutHEAT_Click" FontSize="14" Padding="8,4"/> <!-- About button -->
+                            </StackPanel>
+                        </Border>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+
+        <!-- Main Content Area - Centered and Top-Aligned -->
+        <Border Grid.Row="1"
+                Margin="12"
+                CornerRadius="16"
+                BorderBrush="{StaticResource BorderBlue}"
+                BorderThickness="4"
+                Background="#141414"> <!-- Main content border, rounded, blue border, dark background -->
+            <ContentControl x:Name="TabContent"
+                           HorizontalContentAlignment="Center"
+                           VerticalContentAlignment="Top"/> <!-- Displays selected tab content -->
+        </Border>
+    </Grid>
+</Window>
