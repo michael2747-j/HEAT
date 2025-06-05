@@ -1,0 +1,82 @@
+<UserControl
+    x:Class="HEAT.Home"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HEAT"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
+
+    <Grid Background="Transparent" Padding="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Buttons Row -->
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="Start Network Analysis" Style="{StaticResource TabButtonStyle}" Click="StartNetworkAnalysis_Click"/>
+            <Button Grid.Column="1" Content="Pause Network Analysis" Style="{StaticResource TabButtonStyle}" Click="PauseNetworkAnalysis_Click"/>
+            <Button Grid.Column="2" Content="Save Analysis State" Style="{StaticResource TabButtonStyle}" Click="SaveAnalysisState_Click"/>
+            <Button Grid.Column="3" Content="Clear Analysis Log" Style="{StaticResource TabButtonStyle}" Click="ClearAnalysisLog_Click"/>
+        </Grid>
+
+        <!-- Chatter Content Box -->
+        <Border Grid.Row="1"
+                BorderBrush="{StaticResource BorderBlue}"
+                BorderThickness="4"
+                CornerRadius="12"
+                Background="#1AFFFFFF"
+                Padding="0"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch">
+            <Grid>
+                <!-- Logo and fire GIF layers -->
+                <Grid>
+                    <Image Source="Assets/logo.png"
+                           Stretch="Uniform"
+                           Opacity="0.18"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Height="180"/>
+                    <Image x:Name="FireGif"
+                           Source="Assets/fire.gif"
+                           Stretch="Uniform"
+                           Opacity="0.25"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Height="180"/>
+                </Grid>
+                <!-- Chat messages -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              VerticalScrollMode="Auto"
+                              VerticalAlignment="Stretch"
+                              HorizontalAlignment="Stretch">
+                    <ItemsControl x:Name="ChatterList"
+                                  ItemsSource="{x:Bind ChatterLines, Mode=OneWay}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel VerticalAlignment="Top" Margin="32,16,32,0"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="local:ChatterLine">
+                                <TextBlock Text="{x:Bind DisplayText, Mode=OneWay}"
+                                           Foreground="{x:Bind LineBrush, Mode=OneWay}"
+                                           FontFamily="Consolas"
+                                           FontSize="18"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,2"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,182 @@
+<UserControl
+    x:Class="HEAT.Upgrades"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HEAT"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Background="Transparent">
+        <StackPanel Margin="32" Spacing="24">
+
+            <!-- Section: Products -->
+            <TextBlock Text="Available Upgrades"
+					   FontSize="28"
+					   FontWeight="Bold"
+					   Foreground="White"
+					   Margin="0,0,0,16"/>
+
+            <!-- Product: adam:ONE -->
+            <Border Background="#22252A" CornerRadius="8" Padding="16" Margin="0,0,0,12" BorderThickness="1" BorderBrush="#3737FF">
+                <StackPanel Orientation="Horizontal" Spacing="20" VerticalAlignment="Center">
+                    <Image Source="ms-appx:///Assets/adamONE.png"
+						   Width="220" Height="210"
+						   Stretch="UniformToFill"
+						   VerticalAlignment="Center"
+						   Margin="0,0,20,0"/>
+                    <StackPanel VerticalAlignment="Center" MaxWidth="500" Spacing="8">
+                        <HyperlinkButton Content="adam:ONE®"
+										 NavigateUri="https://adamnet.works/products/adam_one/"
+										 Foreground="LightSkyBlue"
+										 FontSize="20"
+										 FontWeight="SemiBold"/>
+                        <TextBlock Text="adam:ONE® is a Zero Trust connectivity (ZTc) solution designed to proactively secure networks by denying all connections unless explicitly verified and allowed. It employs AI-driven dynamic allowlisting, ensuring only safe, user-requested connections are permitted. The system integrates patented technologies like Don’t Talk to Strangers (DTTS)® for egress control and DNSharmony® for threat intelligence aggregation. Operating in a hybrid Muscle-Brain configuration, adam:ONE® combines decentralized performance with centralized control, eliminating single points of failure. It functions out-of-band, requiring no endpoint software, making it ideal for protecting IoT devices and critical infrastructure. "
+								   Foreground="White"
+								   TextWrapping="Wrap"
+								   FontSize="16"/>
+                        <TextBlock Text="Ideal for: Enterprise, Managed Networks, Compliance"
+								   Foreground="#FFD700"
+								   FontSize="14"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Product: DNSharmony -->
+            <Border Background="#22252A" CornerRadius="8" Padding="16" Margin="0,0,0,12" BorderThickness="1" BorderBrush="#3737FF">
+                <StackPanel Orientation="Horizontal" Spacing="20" VerticalAlignment="Center">
+                    <Image Source="ms-appx:///Assets/DNSharmoney.png"
+						   Width="220" Height="220"
+						   Stretch="UniformToFill"
+						   VerticalAlignment="Center"
+						   Margin="0,0,20,0"/>
+                    <StackPanel VerticalAlignment="Center" MaxWidth="500" Spacing="8">
+                        <HyperlinkButton Content="DNSharmony®"
+										 NavigateUri="https://adamnet.works/products/dnsharmony/"
+										 Foreground="LightSkyBlue"
+										 FontSize="20"
+										 FontWeight="SemiBold"/>
+                        <TextBlock Text="DNSharmony® is an intelligence aggregation framework that enhances DNS filtering by combining multiple threat intelligence sources. It allows users to enforce Safe Search, block harmful content, and protect against malware without the need for endpoint software. DNSharmony® supports per-device or group policy assignments and provides real-time visibility into network traffic. It’s available as a self-installable package for platforms like pfSense and ASUS Merlin WRT, catering to both home users and small businesses seeking robust, customizable DNS protection"
+								   Foreground="White"
+								   TextWrapping="Wrap"
+								   FontSize="16"/>
+                        <TextBlock Text="Ideal for: Families, Schools, SMBs"
+								   Foreground="#FFD700"
+								   FontSize="14"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Product: adam:GO -->
+            <Border Background="#22252A" CornerRadius="8" Padding="16" Margin="0,0,0,12" BorderThickness="1" BorderBrush="#3737FF">
+                <StackPanel Orientation="Horizontal" Spacing="20" VerticalAlignment="Center">
+                    <Image Source="ms-appx:///Assets/adamGO.jpg"
+						   Width="210" Height="210"
+						   Stretch="UniformToFill"
+						   VerticalAlignment="Center"
+						   Margin="0,0,20,0"/>
+                    <StackPanel VerticalAlignment="Center" MaxWidth="500" Spacing="8">
+                        <HyperlinkButton Content="adam:GO™"
+										 NavigateUri="https://adamnet.works/products/adam_go/"
+										 Foreground="LightSkyBlue"
+										 FontSize="20"
+										 FontWeight="SemiBold"/>
+                        <TextBlock Text="adam:GO™ extends Zero Trust connectivity to mobile devices by routing all traffic through a dedicated cloud instance of adam:ONE® via an always-on VPN. It integrates with Mobile Device Management (MDM) systems and supports platforms like iOS, iPadOS, Windows 10, and macOS. adam:GO™ ensures that devices remain protected regardless of their connection medium—be it cellular, Wi-Fi, or wired—by enforcing strict security policies and preventing unauthorized access. This solution is particularly beneficial for organizations requiring secure, managed mobile device deployments.
+"
+								   Foreground="White"
+								   TextWrapping="Wrap"
+								   FontSize="16"/>
+                        <TextBlock Text="Ideal for: Mobile Professionals, Travelers"
+								   Foreground="#FFD700"
+								   FontSize="14"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Quiz Section -->
+            <TextBlock Text="Which Upgrade Is Best For You?"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       Margin="0,24,0,12"/>
+            <Button Content="Take the Quiz"
+        HorizontalAlignment="Left"
+        Click="LaunchQuiz_Click"
+        Padding="10,6"
+        Margin="0,0,0,12"
+        Background="#FF8C00"
+        Foreground="White"
+        FontWeight="Bold"
+        CornerRadius="6"
+        BorderThickness="0"
+        Width="160"
+        FontSize="16"/>
+
+            <!-- Benefits Section -->
+            <TextBlock Text="Benefits of Upgrading"
+					   FontSize="24"
+					   FontWeight="Bold"
+					   Foreground="White"
+					   Margin="0,24,0,12"/>
+
+            <StackPanel Spacing="12">
+                <!-- Benefit 1 -->
+                <Border Background="#2A2D30" CornerRadius="8" Padding="12" BorderBrush="#FF8C00" BorderThickness="1">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE7EF;" FontFamily="Segoe MDL2 Assets" Foreground="#FF8C00" FontSize="20"/>
+                        <TextBlock Text="Enhanced malware and phishing protection keeps your users safe from harmful content and malicious actors."
+								   Foreground="White" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Benefit 2 -->
+                <Border Background="#2A2D30" CornerRadius="8" Padding="12" BorderBrush="#FF8C00" BorderThickness="1">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE90A;" FontFamily="Segoe MDL2 Assets" Foreground="#FF8C00" FontSize="20"/>
+                        <TextBlock Text="Advanced firewall and intrusion detection systems proactively defend your network infrastructure."
+								   Foreground="White" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Benefit 3 -->
+                <Border Background="#2A2D30" CornerRadius="8" Padding="12" BorderBrush="#FF8C00" BorderThickness="1">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE8D7;" FontFamily="Segoe MDL2 Assets" Foreground="#FF8C00" FontSize="20"/>
+                        <TextBlock Text="Parental controls and content filtering allow you to manage access and ensure digital wellness at home or school."
+								   Foreground="White" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Benefit 4 -->
+                <Border Background="#2A2D30" CornerRadius="8" Padding="12" BorderBrush="#FF8C00" BorderThickness="1">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE773;" FontFamily="Segoe MDL2 Assets" Foreground="#FF8C00" FontSize="20"/>
+                        <TextBlock Text="Real-time threat intelligence updates ensure you're always protected from emerging threats."
+								   Foreground="White" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Benefit 5 -->
+                <Border Background="#2A2D30" CornerRadius="8" Padding="12" BorderBrush="#FF8C00" BorderThickness="1">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xE8AB;" FontFamily="Segoe MDL2 Assets" Foreground="#FF8C00" FontSize="20"/>
+                        <TextBlock Text="Priority support and regular feature upgrades keep your system performant and up-to-date."
+								   Foreground="White" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- Added Protection Section -->
+            <TextBlock Text="Added Protection Privacy"
+					   FontSize="24"
+					   FontWeight="Bold"
+					   Foreground="White"
+					   Margin="0,24,0,12"/>
+
+            <Border Background="#2A2D30" CornerRadius="8" Padding="16" BorderBrush="#FF8C00" BorderThickness="1">
+                <TextBlock Text="By upgrading to an ADAM Networks solution, you gain advanced DNS-layer security, smart routing policies, decentralized control options, and better compliance readiness—all while minimizing management overhead. Whether you're protecting a small home or an enterprise, the layered security stack adapts to your needs with minimal complexity."
+						   Foreground="White" TextWrapping="Wrap"/>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
