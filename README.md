@@ -1,67 +1,53 @@
-# 🧠 H.E.A.T. Parsing Modules
+# 📱 H.E.A.T. Android Parsing Modules
 
-High-speed, cross-platform C++ modules for real-time network traffic analysis.  
-These native modules power the detection engine behind the H.E.A.T. Android and Windows applications, capturing low-level packet data and translating it into actionable configuration elements for VyOS routers.
+Modular C++ and Kotlin components for real-time network traffic analysis on mobile and embedded platforms.  
+This branch supports the Android version of H.E.A.T., combining JNI-bridged C++ parsing with native Kotlin UI to detect and transform local network activity into VyOS-ready configuration files.
 
 ---
 
 ## 🌐 Purpose
 
-The parsing modules serve as the core intelligence layer of the H.E.A.T. system. Their responsibilities include:
+This parsing layer provides protocol-level visibility to the Android app and enables it to:
 
-- Capturing Ethernet-level traffic (raw packets)
-- Parsing protocols like DNS, DHCP, VLAN, BGP, and OSPF
-- Extracting relevant data such as domain queries, port usage, VPN tunnels, rogue DHCPs, and more
-- Feeding structured output to the VyOS configuration engine in the Windows and Android apps
-
----
-
-## 📁 File Overview
-
-| File                     | Description                                                     |
-|--------------------------|-----------------------------------------------------------------|
-| `BG-Realtime-Parsing.cpp`| Real-time capture and classification of background network data |
-| ospf_esp.cpp           | Parses OSPF traffic and detects encapsulated ESP packets        |
-| ospfesp.cpp            | Alternate/combined OSPF and ESP handling logic                  |
-
-> These modules interface with platform-specific wrappers (NDK for Android, WinPcap for Windows).
+- Capture raw Ethernet frames over USB adapters (or rooted interfaces)
+- Parse and classify traffic across DNS, DHCP, VLANs, VPNs, and routing protocols
+- Automatically extract and structure this data into VyOS firewall and routing rules
+- Trigger security alerts based on suspicious traffic (rogue DHCP, unknown domains, etc.)
 
 ---
 
-## 🧱 Integration Targets
+## 📁 Key Modules and Files
 
-| Platform      | Integration       | Purpose                                 |
-|---------------|-------------------|------------------------------------------|
-| Android       | JNI + NDK         | Kotlin-based UI, traffic analysis engine |
-| Windows       | P/Invoke or bridge| WinUI 3 app + config generator           |
+| File/Folder                        | Description                                                                 |
+|------------------------------------|-----------------------------------------------------------------------------|
+| DNS (UDP/UDP)/                   | Contains DNS and UDP traffic parsers (port 53), flags public DNS servers   |
+| Ethernet_VLAN Parser/           | Extracts Ethernet frame metadata, VLAN tags, and MAC-based segmentation     |
+| VPN parsing/                     | Detects VPN tunnels using IPsec, OpenVPN, GRE based on port/protocol flags |
+| WindowsNetworkHistoryLogger.cpp | Parses Windows registry and local logs to retrieve past DNS/DHCP activity   |
+| ospf_esp/                        | Lightweight test module for parsing OSPF headers and encapsulated ESP data |
+| ospfesp.cpp                      | Consolidated parser handling OSPF LSA updates and IPsec (ESP) detection     |
+
+---
+
+## 🔌 Integration Target
+
+| Component        | Role                                  |
+|------------------|----------------------------------------|
+| Kotlin (Android) | App UI, configuration export           |
+| Android NDK      | Loads and executes C++ modules         |
+| JNI Bindings     | Bridges NDK modules to Kotlin logic    |
 
 ---
 
 ## ⚙️ How It Works
 
-1. Traffic is captured either from a live interface or through a PCAP file.
-2. Each module identifies key protocol patterns (e.g., DHCP offers, VLAN tags, DNS queries).
-3. Output is passed to the configuration layer as structured data.
-4. This data is used to generate full VyOS-ready configuration files.
-
----
-
-## 🧪 Testing Locally
-
-You can build and run a parser on a sample .pcap file like so:
-
-```bash
-g++ -std=c++17 -o test_parser ospf_esp.cpp
-./test_parser test_capture.pcap
-> Replace sample.pcap with a valid capture file for test input.
-
-To test end-to-end on Android:
-
-- Connect an OTG-compatible USB Ethernet adapter
-- Accept permissions when prompted
-- Tap Scan Network
-- Monitor live detection of protocols and services
-
----
-
-## 📂 Folder Layout
+1. The user taps “Scan Network” in the Android app.
+2. The app initializes packet capture (via USB or root interface).
+3. Captured packets are passed to C++ modules using the NDK.
+4. Protocol-specific parsers analyze and extract:
+   - DNS server IPs
+   - DHCP lease announcements
+   - VLAN headers
+   - VPN port usage
+   - BGP/OSPF routing markers
+5. Kotlin layer generates a VyOS configuration file using this structured data.
