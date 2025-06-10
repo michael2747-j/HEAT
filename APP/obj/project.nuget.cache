@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "dgSpecHash": "fSbo/FytVdA=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\antho\\source\\repos\\HEAT\\HEAT.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\antho\\.nuget\\packages\\communitytoolkit.winui.ui.controls.datagrid\\7.1.2\\communitytoolkit.winui.ui.controls.datagrid.7.1.2.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.web.webview2\\1.0.2903.40\\microsoft.web.webview2.1.0.2903.40.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.windows.sdk.buildtools\\10.0.26100.4188\\microsoft.windows.sdk.buildtools.10.0.26100.4188.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.windowsappsdk\\1.7.250513003\\microsoft.windowsappsdk.1.7.250513003.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\packetdotnet\\1.4.8\\packetdotnet.1.4.8.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\sharppcap\\6.3.0\\sharppcap.6.3.0.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\system.text.encoding.codepages\\6.0.0\\system.text.encoding.codepages.6.0.0.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\8.0.16\\microsoft.netcore.app.runtime.win-x86.8.0.16.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.57\\microsoft.windows.sdk.net.ref.10.0.19041.57.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\8.0.16\\microsoft.aspnetcore.app.runtime.win-x86.8.0.16.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.netcore.app.runtime.win-arm64\\8.0.16\\microsoft.netcore.app.runtime.win-arm64.8.0.16.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\8.0.16\\microsoft.aspnetcore.app.runtime.win-x64.8.0.16.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-arm64\\8.0.16\\microsoft.windowsdesktop.app.runtime.win-arm64.8.0.16.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\8.0.16\\microsoft.windowsdesktop.app.runtime.win-x64.8.0.16.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-arm64\\8.0.16\\microsoft.aspnetcore.app.runtime.win-arm64.8.0.16.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\8.0.16\\microsoft.netcore.app.runtime.win-x64.8.0.16.nupkg.sha512",
+    "C:\\Users\\antho\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\8.0.16\\microsoft.windowsdesktop.app.runtime.win-x86.8.0.16.nupkg.sha512"
+  ],
+  "logs": []
+}
