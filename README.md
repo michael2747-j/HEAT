@@ -18,7 +18,7 @@
 H.E.A.T. is a cross-platform system that:
 - Scans real network traffic
 - Parses DNS, DHCP, VLAN, NAT, BGP, and VPN data
-- Generates secure VyOS configuration files in under 2 minutes
+- Generates secure VyOS configuration files in under 5 minutes
 
 This project serves as the master coordination hub for all platform-specific branches.
 
