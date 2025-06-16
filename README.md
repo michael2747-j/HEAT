@@ -13,7 +13,7 @@ Tech Stack 🛠
 This application is built with the following technologies:
  • WinUI 3 – Modern Windows UI Library (Windows App SDK) for native Windows 10/11 user interfaces.
  • .NET 6+ (C#) – Core application logic and framework (leveraging the latest C# features for reliability and speed).
- • Native C++ modules (optional) 🔧 – Integrated via C#/WinRT or P/Invoke for performance-critical components (shared with other platform implementations).
+ • Native C# modules (optional) 🔧 – Integrated via C#/WinRT or P/Invoke for performance-critical components (shared with other platform implementations).
  • MVVM Architecture – Clean separation of UI and logic using the Model-View-ViewModel pattern (facilitated by libraries like Windows Community Toolkit MVVM).
 
 
@@ -26,7 +26,7 @@ Prerequisites
  • .NET 6 SDK or higher – Ensure the .NET SDK is installed for building the project.
  • Visual Studio 2022 (17.3 or later) – with the “Desktop Development with C++” and “Universal Windows Platform development” workloads (optional but recommended for WinUI 3 development).
  • Windows App SDK/WinUI 3 – The project uses WinUI 3 via NuGet; Visual Studio will install the Windows App SDK automatically.
- • HEAT C++ Modules (optional) – If you plan to use the native modules, you may need to compile the code from the cpp-modules branch and place the resulting binaries in the Modules/ directory or a known location. (See the cpp-modules branch README for build instructions.)
+ • HEAT C# Modules (optional) – If you plan to use the native modules, you may need to compile the code from the cpp-modules branch and place the resulting binaries in the Modules/ directory or a known location. (See the cpp-modules branch README for build instructions.)
 HEAT Windows App 🔥
 
 The Windows platform implementation of the multi-platform HEAT project.
@@ -57,12 +57,10 @@ Top-level organization of this branch:
  • HEAT.WindowsApp/ – Core app code
  • App.xaml / App.xaml.cs – App entry point
  • MainWindow.xaml / MainWindow.xaml.cs – Main UI and logic
- • Assets/ – Icons, images
- • Views/ – Page layouts
- • ViewModels/ – Logic layers
+ • Assets/ – Icons, imag
  • Modules/ – Optional folder for compiled C++ libraries
  • README.md – This file
- • LICENSE – Project license
+
 
 ⸻
 
@@ -83,7 +81,7 @@ Prerequisites:
  • .NET 6 SDK or higher
  • Visual Studio 2022 (with UWP + C++ workload)
  • Windows App SDK via NuGet
- • (Optional) C++ modules compiled from cpp-modules branch
+ • (Optional) C# modules compiled from c#-modules branch
 
 Steps:
  1. Clone this repo and switch to the windows-app branch
