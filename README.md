@@ -4,7 +4,7 @@ The Windows platform implementation of the multi-platform HEAT project.
 
 Overview 📋
 
-The HEAT Windows App is a modern desktop application for Windows 10/11, built as part of the cross-platform HEAT project. This app provides a native Windows experience using WinUI 3 and .NET, delivering a sleek Fluent UI interface and robust performance. It serves as the Windows client in the HEAT suite, offering full feature parity with its mobile counterpart and optionally integrating with shared C++ modules for heavy-duty tasks.
+The HEAT Windows App is a modern desktop application for Windows 10/11, built as part of the cross-platform HEAT project. This app provides a native Windows experience using WinUI 3 and .NET, delivering a sleek Fluent UI interface and robust performance. It serves as the Windows client in the HEAT suite, offering full feature parity with its mobile counterpart and optionally integrating with shared C# modules for heavy-duty tasks.
 
 Key points: The Windows app branch contains all code specific to the Windows implementation. It shares core logic concepts with the Android app (via common C# modules) while tailoring the user experience to Windows. Whether you’re running standalone or alongside other platform apps, the Windows app ensures a consistent and responsive experience for HEAT users on the desktop.
 
@@ -13,7 +13,7 @@ Tech Stack 🛠
 This application is built with the following technologies:
  • WinUI 3 – Modern Windows UI Library (Windows App SDK) for native Windows 10/11 user interfaces.
  • .NET 6+ (C#) – Core application logic and framework (leveraging the latest C# features for reliability and speed).
- • Native C++ modules (optional) 🔧 – Integrated via C++/WinRT or P/Invoke for performance-critical components (shared with other platform implementations).
+ • Native C++ modules (optional) 🔧 – Integrated via C#/WinRT or P/Invoke for performance-critical components (shared with other platform implementations).
  • MVVM Architecture – Clean separation of UI and logic using the Model-View-ViewModel pattern (facilitated by libraries like Windows Community Toolkit MVVM).
 
 
@@ -38,7 +38,7 @@ Overview 📋
 The HEAT Windows App is a modern desktop application for Windows 10/11, built as part of the cross-platform HEAT project. This app provides a native Windows experience using WinUI 3 and .NET, delivering a sleek Fluent UI interface and robust performance. It serves as the Windows client in the HEAT suite, offering full feature parity with its mobile counterpart and optionally integrating with shared C++ modules for heavy-duty tasks.
 
 Key points:
-The Windows app branch contains all code specific to the Windows implementation. It shares core logic concepts with the Android app (via common C++ modules) while tailoring the user experience to Windows. Whether you’re running standalone or alongside other platform apps, the Windows app ensures a consistent and responsive experience for HEAT users on the desktop.
+The Windows app branch contains all code specific to the Windows implementation. It shares core logic concepts with the Android app (via common C# modules) while tailoring the user experience to Windows. Whether you’re running standalone or alongside other platform apps, the Windows app ensures a consistent and responsive experience for HEAT users on the desktop.
 
 ⸻
 
