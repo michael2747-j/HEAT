@@ -110,15 +110,6 @@ Active development. Core features are complete. Improvements and polish in progr
 
 ⸻
 
-Contributors 🤝
- • Alice Smith – Project Lead
- • Bob Johnson – WinUI / C++ integration
- • Carol Lee – UI/UX
- • Derek Wong – Android sync
- • …and all open source contributors
-
-⸻
-
 Related Branches 🔀
  • main – Project overview, coordination, docs
  • android-app – Android implementation
